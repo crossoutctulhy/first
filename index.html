@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моя Коллекция</title>
+    <style>
+        /* Ваши стили */
+         :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #2c3e50;
+            --background-color: #f5f6fa;
+            --card-background: #ffffff;
+            --text-color: #2c3e50;
+            --error-color: #e74c3c;
+            --success-color: #2ecc71;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #5d9cec);
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            border-radius: 0 0 15px 15px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.8rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        nav {
+            margin-top: 20px;
+        }
+
+        nav ul {
+            padding: 0;
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        nav li {
+            margin: 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        nav i {
+            margin-right: 8px;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background-color: var(--card-background);
+            border-radius: 15px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        section:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: var(--secondary-color);
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        h2 i {
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        #links-container a {
+            display: block;
+            padding: 12px;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            background-color: rgba(74, 144, 226, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(74, 144, 226, 0.2);
+        }
+
+        #links-container a:hover {
+            background-color: rgba(74, 144, 226, 0.2);
+            transform: translateX(5px);
+        }
+
+        #images-container img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        #images-container img:hover {
+            transform: scale(1.05);
+        }
+
+        form {
+            margin-bottom: 25px;
+        }
+
+        input[type="text"],
+        input[type="url"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="url"]:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        button,
+        .upload-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-top: 10px;
+            text-decoration: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover,
+        .upload-button:hover {
+            background-color: #357abd;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .error-message {
+            color: var(--error-color);
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background-color: rgba(231, 76, 60, 0.1);
+        }
+
+        .success-message {
+            color: var(--success-color);
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background-color: rgba(46, 204, 113, 0.1);
+        }
+
+        #files-container a {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+            text-decoration: none;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        #files-container a i {
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+
+        #files-container a:hover {
+            background-color: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 15px;
+            }
+        }
+
+        /* Новые стили для разворачивания/сворачивания */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .section-header:hover {
+            background-color: #e9ecef;
+        }
+
+        .section-content {
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        .collapse-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .collapse-icon.active {
+            transform: rotate(180deg);
+        }
+
+        /* Стили для медиа-контейнера */
+        .media-item {
+            position: relative;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #f8f9fa;
+            padding: 10px;
+        }
+
+        .media-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .media-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 0 0 8px 8px;
+        }
+
+        .download-button {
+            padding: 6px 12px;
+            font-size: 0.9rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .download-button:hover {
+            background-color: #357abd;
+            transform: translateY(-2px);
+        }
+
+        .lazy-image {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lazy-image.loaded {
+            opacity: 1;
+        }
+
+        /* Стили для прогресс-бара загрузки */
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background-color: #eee;
+            border-radius: 2px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Моя Коллекция</h1>
+            <nav>
+                <ul>
+                    <li><a href="#links"><i class="fas fa-link"></i> Ссылки</a></li>
+                    <li><a href="#images"><i class="fas fa-image"></i> Изображения</a></li>
+                    <li><a href="#files"><i class="fas fa-file"></i> Файлы</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Секция ссылок -->
+            <section id="links">
+                <div class="section-header">
+                    <h2><i class="fas fa-link"></i> Ссылки</h2>
+                    <i class="fas fa-chevron-down collapse-icon"></i>
+                </div>
+                <div class="section-content">
+                    <form id="add-link-form">
+                        <label for="link-url">URL:</label>
+                        <input type="url" id="link-url" name="link-url" required>
+                        <label for="link-name">Название:</label>
+                        <input type="text" id="link-name" name="link-name" required>
+                        <button type="submit">Добавить ссылку</button>
+                    </form>
+                    <div id="links-container" class="grid-container"></div>
+                </div>
+            </section>
+
+            <!-- Секция изображений -->
+            <section id="images">
+                <div class="section-header">
+                    <h2><i class="fas fa-image"></i> Изображения</h2>
+                    <i class="fas fa-chevron-down collapse-icon"></i>
+                </div>
+                <div class="section-content">
+                    <form id="upload-image-form" enctype="multipart/form-data">
+                        <label for="image-upload" class="upload-button">
+                            <i class="fas fa-upload"></i> Выбрать изображение
+                        </label>
+                        <input type="file" id="image-upload" name="image-upload" accept="image/*"
+                            style="display:none;">
+                    </form>
+                    <div id="images-container" class="grid-container"></div>
+                </div>
+            </section>
+
+            <!-- Секция файлов -->
+            <section id="files">
+                <div class="section-header">
+                    <h2><i class="fas fa-file"></i> Файлы</h2>
+                    <i class="fas fa-chevron-down collapse-icon"></i>
+                </div>
+                <div class="section-content">
+                    <form id="upload-file-form" enctype="multipart/form-data">
+                        <label for="file-upload" class="upload-button">
+                            <i class="fas fa-upload"></i> Выбрать файл
+                        </label>
+                        <input type="file" id="file-upload" name="file-upload" accept=".txt,.doc,.docx,.pdf"
+                            style="display:none;">
+                    </form>
+                    <div id="files-container"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Ключи для LocalStorage
+            const LS_KEYS = {
+                LINKS: 'myCollectionLinks',
+                IMAGES: 'myCollectionImages',
+                FILES: 'myCollectionFiles'
+            };
+
+            // Счетчики и лимиты
+            const LIMITS = {
+                links: 110,
+                images: 20,
+                files: 50
+            };
+            const counts = {
+                links: 0,
+                images: 0,
+                files: 0
+            };
+
+            // Инициализация разворачивания/сворачивания секций
+            document.querySelectorAll('.section-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const content = header.nextElementSibling;
+                    const icon = header.querySelector('.collapse-icon');
+                    content.classList.toggle('active');
+                    icon.classList.toggle('active');
+                });
+            });
+
+            // Функция для показа сообщений
+            function showMessage(message, isError = false) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = isError ? 'error-message' : 'success-message';
+                messageDiv.textContent = message;
+                document.querySelector('main').insertBefore(messageDiv,
+                    document.querySelector('section'));
+                setTimeout(() => messageDiv.remove(), 3000);
+            }
+
+            // Функция для скачивания файла
+            function downloadFile(url, filename) {
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+            // Функция для создания элемента изображения
+            function createImageElement(file, imageUrl) {
+                const mediaItem = document.createElement('div');
+                mediaItem.className = 'media-item';
+
+                const img = document.createElement('img');
+                img.className = 'lazy-image';
+
+                const controls = document.createElement('div');
+                controls.className = 'media-controls';
+
+                const downloadBtn = document.createElement('button');
+                downloadBtn.className = 'download-button';
+                downloadBtn.innerHTML = '<i class="fas fa-download"></i> Скачать';
+
+                const progressBar = document.createElement('div');
+                progressBar.className = 'progress-bar';
+                progressBar.innerHTML = '<div class="progress-bar-fill"></div>';
+
+                img.src = imageUrl;
+                img.classList.add('loaded');
+
+                // Добавляем обработчик для скачивания
+                downloadBtn.addEventListener('click', () => {
+                    downloadFile(imageUrl, file.name);
+                });
+
+                controls.appendChild(downloadBtn);
+                mediaItem.appendChild(img);
+                mediaItem.appendChild(controls);
+                mediaItem.appendChild(progressBar);
+
+                return mediaItem;
+            }
+
+            // Функция для сохранения изображений в LocalStorage
+            function saveImagesToLocalStorage(images) {
+                localStorage.setItem(LS_KEYS.IMAGES, JSON.stringify(images));
+            }
+
+            // Функция для загрузки изображений из LocalStorage
+            function loadImagesFromLocalStorage() {
+                const storedImages = localStorage.getItem(LS_KEYS.IMAGES);
+                return storedImages ? JSON.parse(storedImages) : [];
+            }
+
+            // Функция для отображения сохраненных изображений
+            function displayStoredImages() {
+                const storedImages = loadImagesFromLocalStorage();
+                const container = document.getElementById('images-container');
+
+                storedImages.forEach(imageData => {
+                    // Преобразуем base64 в объект File
+                    const byteString = atob(imageData.data.split(',')[1]);
+                    const mimeString = imageData.data.split(',')[0].split(':')[1].split(';')[0];
+                    const ab = new ArrayBuffer(byteString.length);
+                    const ia = new Uint8Array(ab);
+                    for (let i = 0; i < byteString.length; i++) {
+                        ia[i] = byteString.charCodeAt(i);
+                    }
+                    const blob = new Blob([ab], { type: mimeString });
+                    const file = new File([blob], imageData.name, { type: mimeString });
+
+                    const mediaItem = createImageElement(file, imageData.data);
+                    container.appendChild(mediaItem);
+                    counts.images++;
+                });
+            }
+
+            // Обработчик загрузки изображений
+            document.getElementById('image-upload').addEventListener('change', function (e) {
+                if (counts.images >= LIMITS.images) {
+                    showMessage(`Достигнут лимит изображений (${LIMITS.images})`, true);
+                    return;
+                }
+
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (event) {
+                        const imageUrl = event.target.result;
+                        const container = document.getElementById('images-container');
+                        const mediaItem = createImageElement(file, imageUrl);
+                        container.appendChild(mediaItem);
+                        counts.images++;
+
+                        // Сохраняем информацию об изображении в LocalStorage
+                        const storedImages = loadImagesFromLocalStorage();
+                        storedImages.push({ name: file.name, imageUrl });
+                        saveImagesToLocalStorage(storedImages);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Функция для сохранения ссылок в LocalStorage
+            function saveLinksToLocalStorage(links) {
+                localStorage.setItem(LS_KEYS.LINKS, JSON.stringify(links));
+            }
+
+            // Функция для загрузки ссылок из LocalStorage
+            function loadLinksFromLocalStorage() {
+                const storedLinks = localStorage.getItem(LS_KEYS.LINKS);
+                return storedLinks ? JSON.parse(storedLinks) : [];
+            }
+
+            // Функция для отображения сохраненных ссылок
+            function displayStoredLinks() {
+                const storedLinks = loadLinksFromLocalStorage();
+                const container = document.getElementById('links-container');
+
+                storedLinks.forEach(linkData => {
+                    const link = document.createElement('a');
+                    link.href = linkData.url;
+                    link.textContent = linkData.name || linkData.url;
+                    link.target = '_blank';
+                    container.appendChild(link);
+                    counts.links++;
+                });
+            }
+
+            // Обработчик для ссылок
+            document.getElementById('add-link-form').addEventListener('submit', function (e) {
+                e.preventDefault();
+                if (counts.links >= LIMITS.links) {
+                    showMessage(`Достигнут лимит ссылок (${LIMITS.links})`, true);
+                    return;
+                }
+
+                const url = document.getElementById('link-url').value;
+                const name = document.getElementById('link-name').value;
+
+                const link = document.createElement('a');
+                link.href = url;
+                link.textContent = name || url;
+                link.target = '_blank';
+
+                document.getElementById('links-container').appendChild(link);
+                counts.links++;
+                this.reset();
+
+                // Сохраняем ссылку в LocalStorage
+                const storedLinks = loadLinksFromLocalStorage();
+                storedLinks.push({ url: url, name: name });
+                saveLinksToLocalStorage(storedLinks);
+            });
+
+            // Функция для сохранения файлов в LocalStorage (для простоты сохраняем только имя файла)
+            function saveFilesToLocalStorage(files) {
+                localStorage.setItem(LS_KEYS.FILES, JSON.stringify(files));
+            }
+
+            // Функция для загрузки файлов из LocalStorage
+            function loadFilesFromLocalStorage() {
+                const storedFiles = localStorage.getItem(LS_KEYS.FILES);
+                return storedFiles ? JSON.parse(storedFiles) : [];
+            }
+
+            // Функция для отображения сохраненных файлов
+            function displayStoredFiles() {
+                const storedFiles = loadFilesFromLocalStorage();
+                const container = document.getElementById('files-container');
+
+                storedFiles.forEach(fileData => {
+                    const mediaItem = document.createElement('div');
+                    mediaItem.className = 'media-item';
+
+                    const fileInfo = document.createElement('div');
+                    fileInfo.innerHTML = `<i class="fas fa-file"></i> ${fileData.name}`;
+
+                    const downloadBtn = document.createElement('button');
+                    downloadBtn.className = 'download-button';
+                    downloadBtn.innerHTML = '<i class="fas fa-download"></i> Скачать';
+
+                    // Создаем ссылку для скачивания
+                    downloadBtn.addEventListener('click', () => {
+                        downloadFile(fileData.url, fileData.name);
+                    });
+
+                    mediaItem.appendChild(fileInfo);
+                    mediaItem.appendChild(downloadBtn);
+                    container.appendChild(mediaItem);
+                    counts.files++;
+                });
+            }
+
+            // Обработчик для файлов
+            document.getElementById('file-upload').addEventListener('change', function (e) {
+                if (counts.files >= LIMITS.files) {
+                    showMessage(`Достигнут лимит файлов (${LIMITS.files})`, true);
+                    return;
+                }
+
+                const file = e.target.files[0];
+                if (file) {
+                    const allowedTypes = ['.txt', '.doc', '.docx', '.pdf'];
+                    const fileExt = '.' + file.name.split('.').pop().toLowerCase();
+
+                    if (!allowedTypes.includes(fileExt)) {
+                        showMessage('Неподдерживаемый тип файла', true);
+                        return;
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = function (event) {
+                        const fileData = event.target.result;
+
+                        const mediaItem = document.createElement('div');
+                        mediaItem.className = 'media-item';
+
+                        const fileInfo = document.createElement('div');
+                        fileInfo.innerHTML = `<i class="fas fa-file"></i> ${file.name}`;
+
+                        const downloadBtn = document.createElement('button');
+                        downloadBtn.className = 'download-button';
+                        downloadBtn.innerHTML = '<i class="fas fa-download"></i> Скачать';
+
+                        // Создаем ссылку для скачивания
+                        downloadBtn.addEventListener('click', () => {
+                            downloadFile(fileData, file.name);
+                        });
+
+                        mediaItem.appendChild(fileInfo);
+                        mediaItem.appendChild(downloadBtn);
+                        document.getElementById('files-container').appendChild(mediaItem);
+                        counts.files++;
+
+                        // Сохраняем файл в LocalStorage
+                        const storedFiles = loadFilesFromLocalStorage();
+                        storedFiles.push({ name: file.name, url: fileData });
+                        saveFilesToLocalStorage(storedFiles);
+                    };
+
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Загрузка данных из LocalStorage при загрузке страницы
+            displayStoredLinks();
+            displayStoredImages();
+            displayStoredFiles();
+
+            // Открываем первую секцию по умолчанию
+            document.querySelector('.section-content').classList.add('active');
+            document.querySelector('.collapse-icon').classList.add('active');
+        });
+    </script>
+</body>
+
+</html>
