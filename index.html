@@ -542,16 +542,24 @@
                 const container = document.getElementById('images-container');
 
                 storedImages.forEach(imageData => {
-                    // Преобразуем base64 в объект File
-                    const byteString = atob(imageData.data.split(',')[1]);
-                    const mimeString = imageData.data.split(',')[0].split(':')[1].split(';')[0];
-                    const ab = new ArrayBuffer(byteString.length);
-                    const ia = new Uint8Array(ab);
-                    for (let i = 0; i < byteString.length; i++) {
-                        ia[i] = byteString.charCodeAt(i);
+                    // Создаем объект File из данных
+                    let file;
+                    try {
+                        const byteString = atob(imageData.data.split(',')[1]);
+                        const mimeString = imageData.data.split(',')[0].split(':')[1].split(';')[0];
+                        const ab = new ArrayBuffer(byteString.length);
+                        const ia = new Uint8Array(ab);
+                        for (let i = 0; i < byteString.length; i++) {
+                            ia[i] = byteString.charCodeAt(i);
+                        }
+                        const blob = new Blob([ab], { type: mimeString });
+                        file = new File([blob], imageData.name, { type: mimeString, lastModified: new Date().getTime() });
+
+                    } catch (e) {
+                        console.error("Ошибка при преобразовании base64 в File:", e);
+                        return; // Пропускаем этот элемент, если произошла ошибка
                     }
-                    const blob = new Blob([ab], { type: mimeString });
-                    const file = new File([blob], imageData.name, { type: mimeString });
+
 
                     const mediaItem = createImageElement(file, imageData.data);
                     container.appendChild(mediaItem);
@@ -578,7 +586,7 @@
 
                         // Сохраняем информацию об изображении в LocalStorage
                         const storedImages = loadImagesFromLocalStorage();
-                        storedImages.push({ name: file.name, imageUrl });
+                        storedImages.push({ name: file.name, imageUrl }); // Сохраняем данные как data URL
                         saveImagesToLocalStorage(storedImages);
                     };
                     reader.readAsDataURL(file);
